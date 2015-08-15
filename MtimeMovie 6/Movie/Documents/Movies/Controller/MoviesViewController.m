@@ -15,6 +15,7 @@
 @interface MoviesViewController ()
 {
     NSMutableArray *_movieModalArray;
+    __block NSDictionary *dataDic;
 }
 @end
 
@@ -34,7 +35,12 @@
     [self _creatTableView];
     [self _creatPosterView];
 
-    [self _loadData];
+    dataDic = [[NSDictionary alloc] init];
+    [DataService getTextUrlString:MovieUrl block:^(id result) {
+        dataDic = result;
+        [self _loadData];
+        [_movieListTable reloadData];
+    }];
     // Do any additional setup after loading the view.
 }
 
@@ -48,7 +54,7 @@
 }
 
 - (void)_loadData {
-    NSDictionary *dataDic = [DataService getJsonDataFromFile:@"us_box.json"];
+//    NSDictionary *dataDic = [DataService getJsonDataFromFile:@"us_box.json"];
     
     _movieModalArray = [NSMutableArray array];
     NSArray *subjects = dataDic[@"subjects"];

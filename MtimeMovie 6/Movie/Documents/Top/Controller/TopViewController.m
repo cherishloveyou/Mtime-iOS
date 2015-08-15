@@ -18,7 +18,7 @@
 {
     UICollectionView *_collectionView;
     NSMutableArray *_topModalArray;
-    
+    __block NSMutableDictionary *dataDic;
 }
 @end
 
@@ -33,8 +33,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self _loadData];
+//    [self _loadData];
+//    [self _creatCollectionView];
     [self _creatCollectionView];
+
+    dataDic = [[NSMutableDictionary alloc] init];
+    [DataService getTextUrlString:TopUrl block:^(id result) {
+        dataDic = result;
+        NSLog(@"%@",dataDic);
+        [self _loadData];
+        [_collectionView reloadData];
+    }];
+ 
     // Do any additional setup after loading the view.
 }
 
@@ -45,11 +55,14 @@
 
 #pragma mark -Data
 - (void)_loadData {
-    NSDictionary *dataDic = [DataService getJsonDataFromFile:@"top250.json"];
+//    __block NSDictionary *dataDic = [DataService getJsonDataFromFile:@"top250.json"];
+//    __block NSMutableDictionary *dataDic = [[NSMutableDictionary alloc] init];
     //    NSLog(@"%@",dataDic);
+//    dataDic = [DataService getTest];
     
     _topModalArray = [NSMutableArray array];
-
+    NSLog(@"~~~~~~%@",dataDic);
+    
     NSArray *subjects = dataDic[@"subjects"];
     for (NSDictionary *dic in subjects) {
         TopModal *modal = [[TopModal alloc] init];

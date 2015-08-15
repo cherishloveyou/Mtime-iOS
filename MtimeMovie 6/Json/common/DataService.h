@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void(^BlockType)(id result);
+
 @interface DataService : NSObject
 
 + (id)getJsonDataFromFile:(NSString *)fileName;
++ (void)getTextUrlString:(NSString *)urlString
+                   block:(BlockType)block;
 
 @end
